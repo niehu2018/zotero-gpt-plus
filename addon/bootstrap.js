@@ -22,7 +22,7 @@ async function waitForZotero() {
     await Zotero.initializationPromise;
   }
 
-  var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
+
   var windows = Services.wm.getEnumerator("navigator:browser");
   var found = false;
   while (windows.hasMoreElements()) {
@@ -111,13 +111,21 @@ function shutdown({ id, version, resourceURI, rootURI }, reason) {
       Components.interfaces.nsISupports
     ).wrappedJSObject;
   }
-  Zotero.__addonInstance__.hooks.onShutdown();
+  if (Zotero.__addonInstance__) {
+    Zotero.__addonInstance__.hooks.onShutdown();
+  }
 
   Cc["@mozilla.org/intl/stringbundle;1"]
     .getService(Components.interfaces.nsIStringBundleService)
     .flushBundles();
 
-  Cu.unload(`${rootURI}/chrome/content/scripts/index.js`);
+  if (Zotero.platformMajorVersion >= 102) {
+    // Zotero 7
+    // Script unloading is generally handled automatically by the sandbox destruction
+  } else {
+    // Zotero 6
+    Cu.unload(`${rootURI}/chrome/content/scripts/index.js`);
+  }
 
   if (chromeHandle) {
     chromeHandle.destruct();

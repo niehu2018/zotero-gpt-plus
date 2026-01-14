@@ -109,22 +109,22 @@ async function main() {
       outfile,
       // Don't turn minify on
       // minify: true,
-      target: "firefox60",
-      external: ["fs", "path", "crypto", "stream", "util", "zlib", "http", "https", "url"],
+      target: "firefox102",
     })
     .catch(() => process.exit(1));
 
   console.log("[Build] Run esbuild OK");
 
-  const indexJsContent = fs.readFileSync(outfile, "utf-8");
-  const result = await UglifyJS.minify(indexJsContent, {
-    output: { ascii_only: true },
-  });
-  if (result.error) {
-    console.log("UglifyJS error", result.error);
-    process.exit(1);
-  }
-  fs.writeFileSync(outfile, result.code, "utf-8");
+  // Skip minification to avoid dynamic require issues
+  // const indexJsContent = fs.readFileSync(outfile, "utf-8");
+  // const result = await UglifyJS.minify(indexJsContent, {
+  //   output: { ascii_only: true },
+  // });
+  // if (result.error) {
+  //   console.log("UglifyJS error", result.error);
+  //   process.exit(1);
+  // }
+  // fs.writeFileSync(outfile, result.code, "utf-8");
 
   const replaceFrom = [
     /__author__/g,
@@ -132,9 +132,10 @@ async function main() {
     /__homepage__/g,
     /__buildVersion__/g,
     /__buildTime__/g,
+    /__addonInstance__/g,
   ];
 
-  const replaceTo = [author, description, homepage, version, buildTime];
+  const replaceTo = [author, description, homepage, version, buildTime, config.addonInstance];
 
   replaceFrom.push(
     ...Object.keys(config).map((k) => new RegExp(`__${k}__`, "g"))
