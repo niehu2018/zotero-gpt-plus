@@ -124,7 +124,9 @@ function shutdown({ id, version, resourceURI, rootURI }, reason) {
     // Script unloading is generally handled automatically by the sandbox destruction
   } else {
     // Zotero 6
-    Cu.unload(`${rootURI}/chrome/content/scripts/index.js`);
+    if (typeof Cu !== "undefined" && typeof Cu.unload === "function") {
+      Cu.unload(`${rootURI}/chrome/content/scripts/index.js`);
+    }
   }
 
   if (chromeHandle) {

@@ -1,6 +1,6 @@
 # Zotero GPT Plus 功能复现计划
 
-基于 GPT Plus 2.2.9.5 截图分析，规划开源复现方案。
+基于 GPT Pro 2.2.9.5 截图分析，规划开源复现方案。
 
 **注：原版的 "Zotero GPT Connector" 验证模块已被移除，本项目为完全开源实现。**
 
@@ -285,4 +285,4 @@ Zotero.Notifier.registerObserver({
 
 | 版本 | 日期 | 变更 |
 |------|------|------|
-| 0.1.0 | 2026-01-14 | Phase 1-4 完成，开源替代 GPT Pro 验证模块 |
+| 0.1.0 | 2026-01-15 | Phase 1-4 完成，开源替代 GPT Pro 验证模块，UI 更新 |

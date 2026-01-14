@@ -20,12 +20,12 @@ async function onStartup() {
   );
 
   // Initialize modules
-  Zotero[config.addonInstance].views = new Views();
-  Zotero[config.addonInstance].utils = new Utils();
-  Zotero[config.addonInstance].prefs = new Preferences();
-  Zotero[config.addonInstance].readerPanel = new ReaderPanel();
-  Zotero[config.addonInstance].pdfQuickMenu = new PDFQuickMenu();
-  Zotero[config.addonInstance].annotationHandler = new AnnotationHandler();
+  try { Zotero[config.addonInstance].views = new Views(); } catch (e) { Zotero.logError(e); }
+  try { Zotero[config.addonInstance].utils = new Utils(); } catch (e) { Zotero.logError(e); }
+  try { Zotero[config.addonInstance].prefs = new Preferences(); } catch (e) { Zotero.logError(e); }
+  try { Zotero[config.addonInstance].readerPanel = new ReaderPanel(); } catch (e) { Zotero.logError(e); }
+  try { Zotero[config.addonInstance].pdfQuickMenu = new PDFQuickMenu(); } catch (e) { Zotero.logError(e); }
+  try { Zotero[config.addonInstance].annotationHandler = new AnnotationHandler(); } catch (e) { Zotero.logError(e); }
 
   // Register preference pane (Zotero 7+)
   if (Zotero.PreferencePanes) {
@@ -45,7 +45,18 @@ function onShutdown(): void {
   delete Zotero[config.addonInstance];
 }
 
+function onPrefsEvent(event: string): void {
+  try {
+    if (event === "load" || event === "show") {
+      Zotero[config.addonInstance].prefs?.init();
+    }
+  } catch (e) {
+    Zotero.logError(e);
+  }
+}
+
 export default {
   onStartup,
   onShutdown,
+  onPrefsEvent,
 };

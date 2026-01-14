@@ -13,7 +13,7 @@
         em:description="__description__"
         em:homepageURL="__homepage__"
         em:iconURL="chrome://__addonRef__/content/icons/favicon.png"
-        em:optionsURL="chrome://__addonRef__/content/preferences.xul"
+        em:optionsURL="chrome://__addonRef__/content/preferences.xhtml"
         em:updateURL="__updaterdf__"
         em:multiprocessCompatible="true"
         em:bootstrap="true">

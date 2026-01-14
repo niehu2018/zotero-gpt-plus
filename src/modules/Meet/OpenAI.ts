@@ -4,7 +4,8 @@ import { Document } from "langchain/document";
 import LocalStorage from "../localStorage";
 import Views from "../views";
 import Meet from "./api";
-const similarity = require('compute-cosine-similarity');
+// @ts-ignore
+import similarity from "compute-cosine-similarity";
 declare type RequestArg = { headers: any, api: string, body: Function, remove?: string | RegExp, process?: Function }
 let chatID: string
 const requestArgs: RequestArg[] = [

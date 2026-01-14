@@ -104,6 +104,7 @@ async function main() {
       entryPoints: ["src/index.ts"],
       define: {
         __env__: `"${process.env.NODE_ENV}"`,
+        PACKAGE_VERSION: `"${version}"`,
       },
       bundle: true,
       outfile,

@@ -24,7 +24,7 @@
     "restart-prod": "npm run build-prod && npm run stop && npm run start",
     "restart": "npm run restart-dev",
     "release": "release-it",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest"
   },
   "repository": {
     "type": "git",
@@ -66,8 +66,10 @@
     "@types/crypto-js": "^4.1.1",
     "@types/markdown-it": "^12.2.3",
     "@types/node": "^18.11.17",
+    "@vitest/ui": "^4.0.17",
     "compressing": "^1.6.3",
     "concurrently": "^8.0.1",
+    "cross-env": "^10.1.0",
     "esbuild": "^0.17.4",
     "esbuild-plugin-wasm": "^1.0.0",
     "minimist": "^1.2.7",
@@ -76,6 +78,7 @@
     "replace-in-file": "^6.3.5",
     "typescript": "^5.0.4",
     "uglify-js": "^3.17.4",
+    "vitest": "^4.0.17",
     "zotero-types": "^1.0.12"
   }
 }

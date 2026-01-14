@@ -15,10 +15,14 @@ const SLIDER_CONFIGS: Record<string, [number, number, number, boolean?]> = {
 // Checkbox configs
 const CHECKBOX_KEYS = [
   "useCustomEmbeddings",
+  "aiOutline",
   "readerSidePanel",
   "noteSidePanel",
   "popupShortcuts",
   "autoInsertAnnotation",
+  "altSelection",
+  "preserveReasoningClipboard",
+  "preserveReasoningNote",
 ];
 
 // Text input configs
@@ -40,6 +44,9 @@ export default class Preferences {
   private configManager: ConfigManager = new ConfigManager();
 
   init() {
+    if (this.doc === document) {
+      return;
+    }
     this.doc = document;
     this.loadAll();
     this.bindEvents();
@@ -110,11 +117,37 @@ export default class Preferences {
   private loadApiProvider() {
     const api = this.getPref("api") || "";
     const dropdown = this.$("pref-api-provider") as any;
+    const apiMode = this.$("pref-api-mode") as any;
+    if (apiMode) {
+      apiMode.value = api.includes("/v1/") ? "full" : "base";
+    }
     if (dropdown) {
       if (api.includes("openai.com")) {
         dropdown.value = "https://api.openai.com";
       } else if (api.includes("openrouter.ai")) {
         dropdown.value = "https://openrouter.ai/api";
+      } else if (api.includes("api.deepseek.com")) {
+        dropdown.value = "https://api.deepseek.com";
+      } else if (api.includes("api.siliconflow.cn")) {
+        dropdown.value = "https://api.siliconflow.cn";
+      } else if (api.includes("ark.cn-beijing.volces.com/api")) {
+        dropdown.value = "https://ark.cn-beijing.volces.com/api";
+      } else if (api.includes("api.x.ai")) {
+        dropdown.value = "https://api.x.ai";
+      } else if (api.includes("generativelanguage.googleapis.com")) {
+        dropdown.value = "https://generativelanguage.googleapis.com";
+      } else if (api.includes("api.moonshot.cn")) {
+        dropdown.value = "https://api.moonshot.cn";
+      } else if (api.includes("dashscope.aliyuncs.com/compatible-mode")) {
+        dropdown.value = "https://dashscope.aliyuncs.com/compatible-mode";
+      } else if (api.includes("qianfan.aliyuncs.com")) {
+        dropdown.value = "https://qianfan.aliyuncs.com";
+      } else if (api.includes("open.bigmodel.cn/api/paas")) {
+        dropdown.value = "https://open.bigmodel.cn/api/paas";
+      } else if (api.includes("api.chatanywhere.tech")) {
+        dropdown.value = "https://api.chatanywhere.tech";
+      } else if (api.includes("openai.api2d.net")) {
+        dropdown.value = "https://openai.api2d.net";
       } else {
         dropdown.value = "custom";
       }
@@ -157,16 +190,26 @@ export default class Preferences {
 
     // API provider dropdown
     const apiProvider = this.$("pref-api-provider");
-    apiProvider?.addEventListener("command", () => {
-      const val = (apiProvider as any).value;
-      if (val !== "custom") {
-        const apiInput = this.$("pref-api") as HTMLInputElement;
-        if (apiInput) {
-          apiInput.value = val;
-          this.setPref("api", val);
-        }
+    const apiMode = this.$("pref-api-mode");
+    const applyApiValue = () => {
+      const providerVal = (apiProvider as any)?.value;
+      const modeVal = (apiMode as any)?.value || "base";
+      const apiInput = this.$("pref-api") as HTMLInputElement;
+      if (!apiInput) return;
+      let nextVal = apiInput.value;
+      if (providerVal && providerVal !== "custom") {
+        nextVal = providerVal;
       }
-    });
+      if (modeVal === "full" && !/\/v1\/?$/.test(nextVal)) {
+        nextVal = `${nextVal.replace(/\/+$/, "")}/v1`;
+      } else if (modeVal === "base") {
+        nextVal = nextVal.replace(/\/v1\/?$/, "");
+      }
+      apiInput.value = nextVal;
+      this.setPref("api", nextVal);
+    };
+    apiProvider?.addEventListener("command", applyApiValue);
+    apiMode?.addEventListener("command", applyApiValue);
 
     // Model preset dropdown
     const modelPreset = this.$("pref-model-preset");
@@ -176,6 +219,17 @@ export default class Preferences {
       if (modelInput) {
         modelInput.value = val;
         this.setPref("model", val);
+      }
+    });
+
+    // Embedding model preset dropdown
+    const embeddingModelPreset = this.$("pref-embeddingModel-preset");
+    embeddingModelPreset?.addEventListener("command", () => {
+      const val = (embeddingModelPreset as any).value;
+      const modelInput = this.$("pref-embeddingModel") as HTMLInputElement;
+      if (modelInput) {
+        modelInput.value = val;
+        this.setPref("embeddingModel", val);
       }
     });
 
@@ -195,7 +249,7 @@ export default class Preferences {
         btn.setAttribute("label", "Hide");
       } else {
         input.type = "password";
-        btn.setAttribute("label", "Show");
+        btn.setAttribute("label", "Click to display");
       }
     }
   }
@@ -409,11 +463,82 @@ export default class Preferences {
     }
   }
 
-  editSystemPrompt() {
-    const current = this.getPref("systemPrompt") || "";
-    const newPrompt = prompt("System Prompt:", current);
-    if (newPrompt !== null) {
-      this.setPref("systemPrompt", newPrompt);
+  // === Text Editor Dialog ===
+
+  openTextEditor(key: string, title: string) {
+    const current = String(this.getPref(key) || "");
+
+    // Create editor window
+    const win = window.open(
+      "",
+      `${config.addonRef}-editor-${key}`,
+      "width=600,height=400,resizable=yes"
+    );
+    if (!win) {
+      alert("Failed to open editor window. Please allow popups.");
+      return;
+    }
+
+    win.document.title = title;
+    win.document.body.innerHTML = `
+      <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace; padding: 12px; height: 100vh; display: flex; flex-direction: column; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .header h3 { font-size: 14px; color: #333; }
+        .actions button { padding: 6px 16px; margin-left: 8px; cursor: pointer; border: 1px solid #ccc; border-radius: 4px; background: #f5f5f5; }
+        .actions button.primary { background: #1976d2; color: white; border-color: #1976d2; }
+        .actions button:hover { opacity: 0.9; }
+        textarea { flex: 1; width: 100%; padding: 12px; font-family: Monaco, Consolas, "Courier New", monospace; font-size: 13px; line-height: 1.5; border: 1px solid #ddd; border-radius: 4px; resize: none; }
+        textarea:focus { outline: none; border-color: #1976d2; }
+        .line-numbers { position: absolute; left: 12px; top: 58px; bottom: 12px; width: 30px; padding: 12px 0; font-family: Monaco, Consolas, monospace; font-size: 13px; line-height: 1.5; color: #999; text-align: right; user-select: none; overflow: hidden; }
+      </style>
+      <div class="header">
+        <h3>${title}</h3>
+        <div class="actions">
+          <button onclick="window.close()">Cancel</button>
+          <button class="primary" id="save-btn">Save</button>
+        </div>
+      </div>
+      <textarea id="editor" spellcheck="false">${this.escapeHtml(current)}</textarea>
+    `;
+
+    const textarea = win.document.getElementById("editor") as HTMLTextAreaElement;
+    const saveBtn = win.document.getElementById("save-btn");
+
+    saveBtn?.addEventListener("click", () => {
+      const value = textarea.value;
+
+      // Validate JSON for extraParams
+      if (key === "extraParams") {
+        try {
+          JSON.parse(value);
+        } catch {
+          win.alert("Invalid JSON format. Please fix and try again.");
+          return;
+        }
+      }
+
+      this.setPref(key, value);
+      win.close();
+    });
+
+    // Focus textarea
+    textarea.focus();
+  }
+
+  resetSystemPrompt() {
+    const defaultPrompt = "You are a large language model serving Zotero plugin called Awesome GPT. You can directly output markdown language.";
+    if (confirm("Reset System Prompt to default?")) {
+      this.setPref("systemPrompt", defaultPrompt);
+      alert("System Prompt reset to default.");
+    }
+  }
+
+  resetExtraParams() {
+    if (confirm("Reset Extra Params to empty?")) {
+      this.setPref("extraParams", "{}");
+      alert("Extra Params reset to {}.");
     }
   }
 
