@@ -27,13 +27,15 @@ async function onStartup() {
   Zotero[config.addonInstance].pdfQuickMenu = new PDFQuickMenu();
   Zotero[config.addonInstance].annotationHandler = new AnnotationHandler();
 
-  // Register preference pane
-  Zotero.PreferencePanes.register({
-    pluginID: config.addonID,
-    src: `chrome://${config.addonRef}/content/preferences.xhtml`,
-    label: config.addonName,
-    image: `chrome://${config.addonRef}/content/icons/favicon.png`,
-  });
+  // Register preference pane (Zotero 7+)
+  if (Zotero.PreferencePanes) {
+    Zotero.PreferencePanes.register({
+      pluginID: config.addonID,
+      src: `chrome://${config.addonRef}/content/preferences.xhtml`,
+      label: config.addonName,
+      image: `chrome://${config.addonRef}/content/icons/favicon.png`,
+    });
+  }
 }
 
 function onShutdown(): void {

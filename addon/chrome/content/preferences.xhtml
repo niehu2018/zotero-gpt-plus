@@ -119,7 +119,15 @@
     <!-- System Prompt -->
     <hbox class="pref-row" align="center">
       <label class="pref-label" value="System Prompt"/>
-      <button label="Edit" oncommand="Zotero.ZoteroGPT.prefs.editSystemPrompt()"/>
+      <button label="Edit" oncommand="Zotero.ZoteroGPT.prefs.openTextEditor('systemPrompt', 'System Prompt')"/>
+      <button label="Reset" oncommand="Zotero.ZoteroGPT.prefs.resetSystemPrompt()"/>
+    </hbox>
+
+    <!-- Extra Params -->
+    <hbox class="pref-row" align="center">
+      <label class="pref-label" value="Extra Params"/>
+      <button label="Edit JSON" oncommand="Zotero.ZoteroGPT.prefs.openTextEditor('extraParams', 'Extra Params (JSON)')"/>
+      <button label="Reset" oncommand="Zotero.ZoteroGPT.prefs.resetExtraParams()"/>
     </hbox>
   </groupbox>
 

@@ -7,7 +7,8 @@ pref("extensions.zotero.__addonRef__.temperature", "1.0");
 pref("extensions.zotero.__addonRef__.maxTokens", 4096);
 pref("extensions.zotero.__addonRef__.chatNumber", 3);
 pref("extensions.zotero.__addonRef__.relatedNumber", 5);
-pref("extensions.zotero.__addonRef__.systemPrompt", "");
+pref("extensions.zotero.__addonRef__.systemPrompt", "You are a large language model serving Zotero plugin called Awesome GPT. You can directly output markdown language.");
+pref("extensions.zotero.__addonRef__.extraParams", "{}");
 
 // Custom Embeddings
 pref("extensions.zotero.__addonRef__.useCustomEmbeddings", false);
