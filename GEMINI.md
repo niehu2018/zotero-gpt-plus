@@ -1,4 +1,4 @@
-# Zotero GPT
+# Zotero GPT Plus
 
 This project is a Zotero addon that integrates OpenAI's GPT models into the Zotero reference manager. It provides a chat-based interface to interact with your Zotero library, including items, notes, and PDFs.
 

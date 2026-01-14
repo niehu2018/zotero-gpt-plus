@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Zotero GPT is a Firefox XUL/WebExtension-based Zotero plugin (v0.2.8) that integrates OpenAI's GPT models with Zotero for academic reference management. It enables AI-powered queries on PDFs, bibliography items, and notes directly within Zotero's interface.
+Zotero GPT Plus is a Firefox XUL/WebExtension-based Zotero plugin (v0.2.8) that integrates OpenAI's GPT models with Zotero for academic reference management. It enables AI-powered queries on PDFs, bibliography items, and notes directly within Zotero's interface.
 
 **Tech Stack**: TypeScript, esbuild, zotero-plugin-toolkit, langchain, chromadb, markdown-it
 

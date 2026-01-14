@@ -7,13 +7,13 @@ body:
     attributes:
       value: |
         感谢提交反馈！请尽可能完整填写以下信息，帮助我们更好地定位问题和快速解决问题
-        **在一切开始之前，请确保您已经阅读过 [wiki](https://github.com/MuiseDestiny/zotero-gpt/wiki) 页面**
+        **在一切开始之前，请确保您已经阅读过 [wiki](https://github.com/niehu2018/zotero-gpt-plus/wiki) 页面**
         即使**重启**您的`Zotero`之后，该问题依然存在
         ------
   - type: checkboxes
     attributes:
       label: 这个问题是否已有issue
-      description: 请搜索全部 issue 和 [wiki](https://github.com/MuiseDestiny/zotero-gpt/wiki) 以查看您想反馈的问题是否已存在或已解决
+      description: 请搜索全部 issue 和 [wiki](https://github.com/niehu2018/zotero-gpt-plus/wiki) 以查看您想反馈的问题是否已存在或已解决
       options:
       - label: 我确认没有已有issue，且已阅读**常见问题**
         required: true

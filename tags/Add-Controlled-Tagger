@@ -1,9 +1,9 @@
-@Zotero GPT Tag
+@Zotero GPT Plus Tag
 #Tags[color=#0EA253][trigger=/^生成标签/]
 ${
 (async () => {
   // =========================
-  // 0) 受控词表 + 与 zotero-gpt 对接的小工具
+  // 0) 受控词表 + 与 zotero-gpt-plus 对接的小工具
   // =========================
   const CONTROLLED = new Set([
     "#Field/BuildingEnergyConsumption",

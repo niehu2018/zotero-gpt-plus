@@ -13,7 +13,7 @@ const mathjax3 = require('markdown-it-mathjax3');
 markdown.use(mathjax3);
 
 export default class Views {
-  private id = "zotero-GPT-container";
+  private id = "zotero-GPT-plus-container";
   /**
    * OpenAI接口历史消息记录，需要暴露给GPT响应函数
    */
