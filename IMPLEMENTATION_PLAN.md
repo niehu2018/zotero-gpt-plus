@@ -285,4 +285,4 @@ Zotero.Notifier.registerObserver({
 
 | 版本 | 日期 | 变更 |
 |------|------|------|
-| 0.2.9 | 2026-01-14 | Phase 1-4 完成，开源替代 GPT Pro 验证模块 |
+| 0.1.0 | 2026-01-14 | Phase 1-4 完成，开源替代 GPT Pro 验证模块 |
