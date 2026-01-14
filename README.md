@@ -1,9 +1,7 @@
 <div align="center">
   <img src="imgs/background.png" width="50%" />
 
-
-# Awesome GPT
-
+# Zotero GPT Plus
 
 👋
 
@@ -12,16 +10,12 @@ Welcome to share your command tag [here](https://github.com/niehu2018/zotero-gpt
 [![Using Zotero Plugin Template](https://img.shields.io/badge/Using-Zotero%20Plugin%20Template-blue?style=flat-round&logo=github)](https://github.com/windingwind/zotero-plugin-template)
 [![Latest release](https://img.shields.io/github/v/release/niehu2018/zotero-gpt-plus)](https://github.com/niehu2018/zotero-gpt-plus/releases)
 ![Release Date](https://img.shields.io/github/release-date/niehu2018/zotero-gpt-plus?color=9cf)
-[![License](https://img.shields.io/github/license/niehu2018/zotero-gpt-plus)](https://github.com/niehu2018/zotero-gpt-plus/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/niehu2018/zotero-gpt-plus)](https://github.com/niehu2018/zotero-gpt-plus/blob/main/LICENSE)
 ![Downloads latest release](https://img.shields.io/github/downloads/niehu2018/zotero-gpt-plus/latest/total?color=yellow)
-
 
   <img src="https://user-images.githubusercontent.com/51939531/228763331-90baa9aa-8bef-4b32-9d6f-35538b58b158.png" width="80%" />
 
 </div>
-
-
-
 
 ---
 
@@ -46,7 +40,6 @@ Features about UI:
 - [x] ⚠️ Detailed **error message** will be displayed when the request fails.
 - [x] 🔧 Compatible with **Zotero 6** and **Zotero 7**.
 - [x] 🎉 Discover more exciting features that are not listed here.
-
 
 ## How to use
 - [x] Get `.xpi` file
@@ -108,7 +101,7 @@ Click on the gear icon at the top right of the window. Click on `Install Add-on 
 
 ### How to write a code block
 
-You can find some build-in APIs [here](https://github.com/niehu2018/zotero-gpt-plus/blob/bootstrap/src/modules/Meet/api.ts).
+You can find some build-in APIs [here](https://github.com/niehu2018/zotero-gpt-plus/blob/main/src/modules/Meet/api.ts).
 
 A simple example:
 ```
@@ -126,9 +119,8 @@ Here, the `Summarize the following paragraph for me:` represents plain text, whi
 ![image](https://github.com/niehu2018/zotero-gpt-plus/assets/51939531/ca2dcfbf-efb4-4ba3-8339-5277a879e3ea)
 
 ### GPT Tag Recommendation
-Automatically create tags for entries: [open and copy](https://github.com/niehu2018/zotero-gpt-plus/blob/bootstrap/tags/Add-Controlled-Tagger) then open Zotero, this tag will be automatically imported into Zotero.
+Automatically create tags for entries: [open and copy](https://github.com/niehu2018/zotero-gpt-plus/blob/main/tags/Add-Controlled-Tagger) then open Zotero, this tag will be automatically imported into Zotero.
 
 ## Support the project
 
 [Here](https://github.com/MuiseDestiny/zotero-reference#%E8%B5%9E%E5%8A%A9)
-
