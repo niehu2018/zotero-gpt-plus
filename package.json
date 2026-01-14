@@ -1,9 +1,9 @@
 {
   "name": "zotero-gpt-plus",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "GPT Meet Zotero Plus",
   "config": {
-    "addonName": "Zotero GPT Plus",
+    "addonName": "GPT Plus",
     "addonID": "zoterogptplus@niehu2018",
     "addonRef": "zoterogptplus",
     "addonInstance": "ZoteroGPT",
