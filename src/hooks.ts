@@ -3,6 +3,7 @@ import { getString, initLocale } from "./modules/locale";
 import Views from "./modules/views";
 import Utils from "./modules/utils";
 import Preferences from "./modules/preferences";
+import ReaderPanel from "./modules/readerPanel";
 
 async function onStartup() {
   await Promise.all([
@@ -20,6 +21,7 @@ async function onStartup() {
   Zotero[config.addonInstance].views = new Views();
   Zotero[config.addonInstance].utils = new Utils();
   Zotero[config.addonInstance].prefs = new Preferences();
+  Zotero[config.addonInstance].readerPanel = new ReaderPanel();
 
   // Register preference pane
   Zotero.PreferencePanes.register({

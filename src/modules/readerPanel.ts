@@ -275,7 +275,7 @@ export default class ReaderPanel {
 
     // Model select
     const modelSelect = this.panel.querySelector("#gpt-model-select") as HTMLSelectElement;
-    const currentModel = Zotero.Prefs.get(`${config.addonRef}.model`) || "gpt-3.5-turbo";
+    const currentModel = String(Zotero.Prefs.get(`${config.addonRef}.model`) || "gpt-3.5-turbo");
     modelSelect.value = currentModel;
     modelSelect.addEventListener("change", () => {
       Zotero.Prefs.set(`${config.addonRef}.model`, modelSelect.value);
@@ -299,7 +299,7 @@ export default class ReaderPanel {
     // Load custom prompts
     let customPrompts: QuickAction[] = [];
     try {
-      const tagsStr = Zotero.Prefs.get(`${config.addonRef}.tags`) || "[]";
+      const tagsStr = String(Zotero.Prefs.get(`${config.addonRef}.tags`) || "[]");
       customPrompts = JSON.parse(tagsStr);
     } catch { /* ignore */ }
 
