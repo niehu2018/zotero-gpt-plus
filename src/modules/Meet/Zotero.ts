@@ -4,7 +4,7 @@ import { Document } from "langchain/document";
 import { similaritySearch } from "./OpenAI";
 import Meet from "./api";
 import ZoteroToolkit from "zotero-plugin-toolkit";
-const pdfParse = require("pdf-parse");
+import pdfParse from "pdf-parse";
 
 /**
  * 读取剪贴板
@@ -363,6 +363,10 @@ async function pdf2documents(itemkey: string) {
   return docs
 }
 
+// import pdfParse from "pdf-parse";
+
+// ... (existing imports)
+
 /**
  * Read PDF from file path and extract text as documents
  * Simplified version using pdf-parse library
@@ -372,6 +376,12 @@ async function pdf2documents(itemkey: string) {
  */
 async function pdfFile2documents(filePath: string, itemKey: string): Promise<Document[]> {
   try {
+    // Temporary workaround: pdf-parse causes "Dynamic require of fs" error in Zotero 7
+    // TODO: Implement using Zotero.Fulltext or pdfjs-dist
+    ztoolkit.log(`pdfFile2documents called for ${filePath}. Feature currently disabled due to build issues.`);
+    return [];
+
+    /*
     // Read PDF file as buffer
     // @ts-ignore
     const dataBuffer = await IOUtils.read(filePath);
@@ -405,6 +415,7 @@ async function pdfFile2documents(filePath: string, itemKey: string): Promise<Doc
 
     ztoolkit.log(`pdfFile2documents: extracted ${docs.length} paragraphs from ${filePath}`);
     return docs;
+    */
 
   } catch (error: any) {
     ztoolkit.log(`Error reading PDF ${filePath}:`, error.message);

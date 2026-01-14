@@ -32,7 +32,7 @@
 | Embedding Key | 密码输入 | ✅ 已实现 | P1 |
 | Embedding Model | 输入框 | ✅ 已实现 | P1 |
 | Batch Size | 滑块 | ✅ 已实现 | P1 |
-| Max PDFs | 滑块 | ✅ 已实现 | P1 |
+| Max PDFs | 滑块 | ⚠️ 暂时禁用 (Build issue) | P1 |
 | Test 按钮 | 按钮 | ✅ 已实现 | P2 |
 
 ### 1.3 Config 配置管理
