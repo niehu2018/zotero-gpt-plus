@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://zotero/skin/preferences.css"?>
+<!DOCTYPE window SYSTEM "chrome://zoterogptplus/locale/overlay.dtd">
+
+<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+      xmlns:html="http://www.w3.org/1999/xhtml"
+      id="zoterogptplus-prefs"
+      onload="Zotero.ZoteroGPT.prefs.init()">
+
+  <style>
+    <![CDATA[
+      .pref-group { margin-bottom: 16px; }
+      .pref-row { display: flex; align-items: center; margin: 8px 0; }
+      .pref-label { width: 120px; font-weight: 500; }
+      .pref-input { flex: 1; }
+      .pref-slider { flex: 1; margin: 0 8px; }
+      .pref-value { width: 60px; text-align: right; }
+      .pref-password { flex: 1; }
+      .pref-btn { margin-left: 8px; }
+      groupbox { padding: 12px; margin-bottom: 12px; }
+      caption { font-weight: bold; font-size: 14px; }
+      html|h2 { margin: 0 0 12px 0; font-size: 16px; }
+      html|hr { margin: 16px 0; border: none; border-top: 1px solid #ccc; }
+    ]]>
+  </style>
+
+  <!-- General Settings -->
+  <groupbox>
+    <caption label="General"/>
+
+    <!-- API Endpoint -->
+    <hbox class="pref-row" align="center">
+      <label class="pref-label" value="Base API"/>
+      <menulist id="pref-api-provider" class="pref-input" style="max-width: 120px;">
+        <menupopup>
+          <menuitem label="OpenAI" value="https://api.openai.com"/>
+          <menuitem label="OpenRouter" value="https://openrouter.ai/api"/>
+          <menuitem label="Custom" value="custom"/>
+        </menupopup>
+      </menulist>
+      <textbox id="pref-api" class="pref-input" placeholder="https://api.openai.com"/>
+    </hbox>
+
+    <!-- API Key -->
+    <hbox class="pref-row" align="center">
+      <label class="pref-label" value="API Key"/>
+      <textbox id="pref-secretKey" class="pref-password" type="password" placeholder="sk-..."/>
+      <button id="pref-secretKey-toggle" class="pref-btn" label="Show" oncommand="Zotero.ZoteroGPT.prefs.togglePassword('secretKey')"/>
+    </hbox>
+
+    <!-- Model -->
+    <hbox class="pref-row" align="center">
+      <label class="pref-label" value="Model"/>
+      <textbox id="pref-model" class="pref-input" placeholder="gpt-3.5-turbo"/>
+      <menulist id="pref-model-preset" style="max-width: 150px;">
+        <menupopup>
+          <menuitem label="GPT-3.5" value="gpt-3.5-turbo"/>
+          <menuitem label="GPT-4" value="gpt-4"/>
+          <menuitem label="GPT-4o" value="gpt-4o"/>
+          <menuitem label="GPT-4o-mini" value="gpt-4o-mini"/>
+          <menuitem label="Claude 3.5" value="anthropic/claude-3.5-sonnet"/>
+        </menupopup>
+      </menulist>
+    </hbox>
+
+    <!-- Temperature -->
+    <hbox class="pref-row" align="center">
+      <label class="pref-label" value="Temperature"/>
+      <html:input id="pref-temperature-slider" type="range" min="0" max="2" step="0.1" class="pref-slider"/>
+      <label id="pref-temperature-value" class="pref-value" value="1.0"/>
+    </hbox>
+
+    <!-- Chat Number -->
+    <hbox class="pref-row" align="center">
+      <label class="pref-label" value="Chat History"/>
+      <html:input id="pref-chatNumber-slider" type="range" min="0" max="20" step="1" class="pref-slider"/>
+      <label id="pref-chatNumber-value" class="pref-value" value="3"/>
+    </hbox>
+
+    <!-- Related Number -->
+    <hbox class="pref-row" align="center">
+      <label class="pref-label" value="Related Passages"/>
+      <html:input id="pref-relatedNumber-slider" type="range" min="1" max="30" step="1" class="pref-slider"/>
+      <label id="pref-relatedNumber-value" class="pref-value" value="5"/>
+    </hbox>
+  </groupbox>
+
+  <!-- Embeddings Settings -->
+  <groupbox>
+    <caption label="Embeddings"/>
+
+    <!-- Embedding Batch Size -->
+    <hbox class="pref-row" align="center">
+      <label class="pref-label" value="Batch Size"/>
+      <html:input id="pref-embeddingBatchNum-slider" type="range" min="1" max="100" step="1" class="pref-slider"/>
+      <label id="pref-embeddingBatchNum-value" class="pref-value" value="10"/>
+    </hbox>
+
+    <!-- Max Collection PDFs -->
+    <hbox class="pref-row" align="center">
+      <label class="pref-label" value="Max PDFs"/>
+      <html:input id="pref-maxCollectionPDFs-slider" type="range" min="1" max="50" step="1" class="pref-slider"/>
+      <label id="pref-maxCollectionPDFs-value" class="pref-value" value="20"/>
+    </hbox>
+  </groupbox>
+
+  <!-- UI Settings -->
+  <groupbox>
+    <caption label="UI"/>
+
+    <!-- Panel Width -->
+    <hbox class="pref-row" align="center">
+      <label class="pref-label" value="Panel Width"/>
+      <textbox id="pref-width" style="width: 80px;" placeholder="32%"/>
+    </hbox>
+
+    <!-- Response Speed -->
+    <hbox class="pref-row" align="center">
+      <label class="pref-label" value="Stream Delay (ms)"/>
+      <html:input id="pref-deltaTime-slider" type="range" min="0" max="500" step="10" class="pref-slider"/>
+      <label id="pref-deltaTime-value" class="pref-value" value="100"/>
+    </hbox>
+  </groupbox>
+
+  <!-- Test Connection -->
+  <hbox align="center" pack="start">
+    <button id="pref-test-btn" label="Test Connection" oncommand="Zotero.ZoteroGPT.prefs.testConnection()"/>
+    <label id="pref-test-result" value="" style="margin-left: 12px;"/>
+  </hbox>
+
+</vbox>

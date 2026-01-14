@@ -2,8 +2,9 @@ import { config } from "../package.json";
 import { getString, initLocale } from "./modules/locale";
 import Views from "./modules/views";
 import Utils from "./modules/utils";
+import Preferences from "./modules/preferences";
 
-async function onStartup() { 
+async function onStartup() {
   await Promise.all([
     Zotero.initializationPromise,
     Zotero.unlockPromise,
@@ -15,9 +16,18 @@ async function onStartup() {
     `chrome://${config.addonRef}/content/icons/favicon.png`
   );
 
+  // Initialize modules
   Zotero[config.addonInstance].views = new Views();
-
   Zotero[config.addonInstance].utils = new Utils();
+  Zotero[config.addonInstance].prefs = new Preferences();
+
+  // Register preference pane
+  Zotero.PreferencePanes.register({
+    pluginID: config.addonID,
+    src: `chrome://${config.addonRef}/content/preferences.xhtml`,
+    label: config.addonName,
+    image: `chrome://${config.addonRef}/content/icons/favicon.png`,
+  });
 }
 
 function onShutdown(): void {
