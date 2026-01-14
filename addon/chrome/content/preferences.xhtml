@@ -9,7 +9,6 @@
 
   <style>
     <![CDATA[
-      .pref-group { margin-bottom: 16px; }
       .pref-row { display: flex; align-items: center; margin: 8px 0; }
       .pref-label { width: 120px; font-weight: 500; }
       .pref-input { flex: 1; }
@@ -17,10 +16,17 @@
       .pref-value { width: 60px; text-align: right; }
       .pref-password { flex: 1; }
       .pref-btn { margin-left: 8px; }
+      .pref-indent { margin-left: 24px; }
       groupbox { padding: 12px; margin-bottom: 12px; }
       caption { font-weight: bold; font-size: 14px; }
-      html|h2 { margin: 0 0 12px 0; font-size: 16px; }
-      html|hr { margin: 16px 0; border: none; border-top: 1px solid #ccc; }
+      .prompts-table { width: 100%; border-collapse: collapse; margin: 8px 0; }
+      .prompts-table th, .prompts-table td {
+        border: 1px solid #ccc; padding: 6px 8px; text-align: left;
+      }
+      .prompts-table th { background: #f5f5f5; font-weight: 500; }
+      .prompts-table tr:hover { background: #f9f9f9; }
+      .prompts-table tr.selected { background: #e3f2fd; }
+      .prompt-actions { margin-top: 8px; }
     ]]>
   </style>
 
@@ -31,7 +37,7 @@
     <!-- API Endpoint -->
     <hbox class="pref-row" align="center">
       <label class="pref-label" value="Base API"/>
-      <menulist id="pref-api-provider" class="pref-input" style="max-width: 120px;">
+      <menulist id="pref-api-provider" style="max-width: 120px;">
         <menupopup>
           <menuitem label="OpenAI" value="https://api.openai.com"/>
           <menuitem label="OpenRouter" value="https://openrouter.ai/api"/>
@@ -70,6 +76,13 @@
       <label id="pref-temperature-value" class="pref-value" value="1.0"/>
     </hbox>
 
+    <!-- Max Tokens -->
+    <hbox class="pref-row" align="center">
+      <label class="pref-label" value="Max Tokens"/>
+      <html:input id="pref-maxTokens-slider" type="range" min="256" max="32000" step="256" class="pref-slider"/>
+      <label id="pref-maxTokens-value" class="pref-value" value="4096"/>
+    </hbox>
+
     <!-- Chat Number -->
     <hbox class="pref-row" align="center">
       <label class="pref-label" value="Chat History"/>
@@ -83,24 +96,106 @@
       <html:input id="pref-relatedNumber-slider" type="range" min="1" max="30" step="1" class="pref-slider"/>
       <label id="pref-relatedNumber-value" class="pref-value" value="5"/>
     </hbox>
+
+    <!-- System Prompt -->
+    <hbox class="pref-row" align="center">
+      <label class="pref-label" value="System Prompt"/>
+      <button label="Edit" oncommand="Zotero.ZoteroGPT.prefs.editSystemPrompt()"/>
+    </hbox>
   </groupbox>
 
-  <!-- Embeddings Settings -->
+  <!-- Custom Embeddings -->
   <groupbox>
-    <caption label="Embeddings"/>
+    <caption label="Custom Embeddings"/>
+
+    <!-- Enable Custom Embeddings -->
+    <hbox class="pref-row" align="center">
+      <checkbox id="pref-useCustomEmbeddings" label="Use custom embeddings API"/>
+    </hbox>
+
+    <!-- Embedding API -->
+    <hbox class="pref-row pref-indent" align="center">
+      <label class="pref-label" value="API"/>
+      <textbox id="pref-embeddingApi" class="pref-input" placeholder="http://127.0.0.1:1234/v1/embeddings"/>
+    </hbox>
+
+    <!-- Embedding Key -->
+    <hbox class="pref-row pref-indent" align="center">
+      <label class="pref-label" value="Key"/>
+      <textbox id="pref-embeddingKey" class="pref-password" type="password" placeholder="sk-..."/>
+      <button id="pref-embeddingKey-toggle" class="pref-btn" label="Show" oncommand="Zotero.ZoteroGPT.prefs.togglePassword('embeddingKey')"/>
+    </hbox>
+
+    <!-- Embedding Model -->
+    <hbox class="pref-row pref-indent" align="center">
+      <label class="pref-label" value="Model"/>
+      <textbox id="pref-embeddingModel" class="pref-input" placeholder="text-embedding-ada-002"/>
+    </hbox>
 
     <!-- Embedding Batch Size -->
-    <hbox class="pref-row" align="center">
+    <hbox class="pref-row pref-indent" align="center">
       <label class="pref-label" value="Batch Size"/>
       <html:input id="pref-embeddingBatchNum-slider" type="range" min="1" max="100" step="1" class="pref-slider"/>
       <label id="pref-embeddingBatchNum-value" class="pref-value" value="10"/>
     </hbox>
 
     <!-- Max Collection PDFs -->
-    <hbox class="pref-row" align="center">
+    <hbox class="pref-row pref-indent" align="center">
       <label class="pref-label" value="Max PDFs"/>
       <html:input id="pref-maxCollectionPDFs-slider" type="range" min="1" max="50" step="1" class="pref-slider"/>
       <label id="pref-maxCollectionPDFs-value" class="pref-value" value="20"/>
+    </hbox>
+
+    <!-- Test Embeddings -->
+    <hbox class="pref-row pref-indent" align="center">
+      <button label="Test Embeddings" oncommand="Zotero.ZoteroGPT.prefs.testEmbeddings()"/>
+      <label id="pref-embedding-test-result" value="" style="margin-left: 12px;"/>
+    </hbox>
+  </groupbox>
+
+  <!-- Feature Toggles -->
+  <groupbox>
+    <caption label="Features"/>
+
+    <vbox>
+      <checkbox id="pref-readerSidePanel" label="Reader Side Panel"/>
+      <checkbox id="pref-noteSidePanel" label="Note Side Panel"/>
+      <checkbox id="pref-popupShortcuts" label="Enable popup shortcut prompts in reading interface"/>
+      <checkbox id="pref-autoInsertAnnotation" label="Auto insert GPT answer into annotation comment"/>
+    </vbox>
+
+    <!-- Annotation Color -->
+    <hbox class="pref-row" align="center" style="margin-top: 8px;">
+      <label class="pref-label" value="Annotation Color"/>
+      <html:input id="pref-annotationColor" type="color" value="#b99bcf"/>
+    </hbox>
+  </groupbox>
+
+  <!-- Prompts Management -->
+  <groupbox>
+    <caption label="Prompts"/>
+
+    <html:div id="prompts-container">
+      <html:table class="prompts-table">
+        <html:thead>
+          <html:tr>
+            <html:th style="width: 150px;">Name</html:th>
+            <html:th style="width: 120px;">Type</html:th>
+            <html:th>Prompt</html:th>
+          </html:tr>
+        </html:thead>
+        <html:tbody id="prompts-tbody">
+          <!-- Populated by JS -->
+        </html:tbody>
+      </html:table>
+    </html:div>
+
+    <hbox class="prompt-actions" align="center">
+      <button label="↑" oncommand="Zotero.ZoteroGPT.prefs.movePrompt(-1)" tooltiptext="Move Up"/>
+      <button label="↓" oncommand="Zotero.ZoteroGPT.prefs.movePrompt(1)" tooltiptext="Move Down"/>
+      <button label="Edit" oncommand="Zotero.ZoteroGPT.prefs.editPrompt()"/>
+      <button label="Add" oncommand="Zotero.ZoteroGPT.prefs.addPrompt()"/>
+      <button label="Delete" oncommand="Zotero.ZoteroGPT.prefs.deletePrompt()"/>
     </hbox>
   </groupbox>
 
@@ -122,10 +217,12 @@
     </hbox>
   </groupbox>
 
-  <!-- Test Connection -->
+  <!-- Test & Links -->
   <hbox align="center" pack="start">
     <button id="pref-test-btn" label="Test Connection" oncommand="Zotero.ZoteroGPT.prefs.testConnection()"/>
     <label id="pref-test-result" value="" style="margin-left: 12px;"/>
+    <spacer flex="1"/>
+    <button label="Help" oncommand="Zotero.launchURL('https://github.com/niehu2018/zotero-gpt-plus')"/>
   </hbox>
 
 </vbox>
