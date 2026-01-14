@@ -31,3 +31,7 @@ pref("extensions.zotero.__addonRef__.deltaTime", 100);
 // Tags/Prompts
 pref("extensions.zotero.__addonRef__.tags", "[]");
 pref("extensions.zotero.__addonRef__.tagsMore", "expand");
+
+// Config Profiles
+pref("extensions.zotero.__addonRef__.savedConfigs", "[]");
+pref("extensions.zotero.__addonRef__.currentConfig", "");

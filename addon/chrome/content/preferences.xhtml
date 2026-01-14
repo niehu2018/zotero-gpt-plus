@@ -30,6 +30,25 @@
     ]]>
   </style>
 
+  <!-- Config Management -->
+  <groupbox>
+    <caption label="Config Profiles"/>
+    <hbox class="pref-row" align="center">
+      <label class="pref-label" value="Saved Configs"/>
+      <menulist id="pref-config-select" style="flex: 1;">
+        <menupopup>
+          <!-- Populated by JS -->
+        </menupopup>
+      </menulist>
+      <button label="Switch" oncommand="Zotero.ZoteroGPT.prefs.switchConfig()"/>
+    </hbox>
+    <hbox class="pref-row" align="center">
+      <spacer flex="1"/>
+      <button label="Save Current" oncommand="Zotero.ZoteroGPT.prefs.saveConfig()"/>
+      <button label="Delete" oncommand="Zotero.ZoteroGPT.prefs.deleteConfig()"/>
+    </hbox>
+  </groupbox>
+
   <!-- General Settings -->
   <groupbox>
     <caption label="General"/>

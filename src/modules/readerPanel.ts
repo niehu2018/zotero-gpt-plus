@@ -63,12 +63,13 @@ export default class ReaderPanel {
     const readerWindow = this.reader?._iframeWindow || window;
     const container = readerWindow.document.querySelector(".reader") || readerWindow.document.body;
 
-    this.panel = readerWindow.document.createElement("div");
-    this.panel.id = PANEL_ID;
-    this.panel.innerHTML = this.getPanelHTML();
+    const panel = readerWindow.document.createElement("div");
+    panel.id = PANEL_ID;
+    panel.innerHTML = this.getPanelHTML();
+    this.panel = panel;
     this.applyStyles();
 
-    container.appendChild(this.panel);
+    container.appendChild(panel);
     this.bindPanelEvents();
     this.loadQuickActions();
   }

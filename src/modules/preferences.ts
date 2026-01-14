@@ -1,4 +1,5 @@
 import { config } from "../../package.json";
+import ConfigManager from "./configManager";
 
 // Slider configs: [min, max, step, isString]
 const SLIDER_CONFIGS: Record<string, [number, number, number, boolean?]> = {
@@ -36,12 +37,14 @@ export default class Preferences {
   private doc: Document | null = null;
   private selectedPromptIndex: number = -1;
   private prompts: Prompt[] = [];
+  private configManager: ConfigManager = new ConfigManager();
 
   init() {
     this.doc = document;
     this.loadAll();
     this.bindEvents();
     this.loadPrompts();
+    this.loadConfigDropdown();
   }
 
   private getPref(key: string): any {
@@ -411,6 +414,64 @@ export default class Preferences {
     const newPrompt = prompt("System Prompt:", current);
     if (newPrompt !== null) {
       this.setPref("systemPrompt", newPrompt);
+    }
+  }
+
+  // === Config Management ===
+
+  loadConfigDropdown() {
+    const dropdown = this.$("pref-config-select") as any;
+    if (!dropdown) return;
+
+    const popup = dropdown.querySelector("menupopup") || this.doc!.createElement("menupopup");
+    popup.innerHTML = "";
+
+    const configs = this.configManager.getConfigs();
+    const current = this.configManager.getCurrentConfigName();
+
+    configs.forEach(cfg => {
+      const item = this.doc!.createElement("menuitem");
+      item.setAttribute("label", cfg.name);
+      item.setAttribute("value", cfg.name);
+      popup.appendChild(item);
+    });
+
+    if (!dropdown.querySelector("menupopup")) {
+      dropdown.appendChild(popup);
+    }
+
+    if (current && configs.some(c => c.name === current)) {
+      dropdown.value = current;
+    }
+  }
+
+  saveConfig() {
+    const name = prompt("Config name:", this.configManager.getCurrentConfigName() || "My Config");
+    if (name && this.configManager.saveCurrentAsConfig(name)) {
+      this.loadConfigDropdown();
+      alert(`Config "${name}" saved!`);
+    }
+  }
+
+  switchConfig() {
+    const dropdown = this.$("pref-config-select") as any;
+    const name = dropdown?.value;
+    if (name && this.configManager.switchToConfig(name)) {
+      this.loadAll();
+      alert(`Switched to "${name}"`);
+    }
+  }
+
+  deleteConfig() {
+    const dropdown = this.$("pref-config-select") as any;
+    const name = dropdown?.value;
+    if (!name) {
+      alert("Please select a config first");
+      return;
+    }
+    if (confirm(`Delete config "${name}"?`) && this.configManager.deleteConfig(name)) {
+      this.loadConfigDropdown();
+      alert(`Config "${name}" deleted`);
     }
   }
 }

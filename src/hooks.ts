@@ -4,6 +4,8 @@ import Views from "./modules/views";
 import Utils from "./modules/utils";
 import Preferences from "./modules/preferences";
 import ReaderPanel from "./modules/readerPanel";
+import PDFQuickMenu from "./modules/pdfQuickMenu";
+import AnnotationHandler from "./modules/annotationHandler";
 
 async function onStartup() {
   await Promise.all([
@@ -22,6 +24,8 @@ async function onStartup() {
   Zotero[config.addonInstance].utils = new Utils();
   Zotero[config.addonInstance].prefs = new Preferences();
   Zotero[config.addonInstance].readerPanel = new ReaderPanel();
+  Zotero[config.addonInstance].pdfQuickMenu = new PDFQuickMenu();
+  Zotero[config.addonInstance].annotationHandler = new AnnotationHandler();
 
   // Register preference pane
   Zotero.PreferencePanes.register({
