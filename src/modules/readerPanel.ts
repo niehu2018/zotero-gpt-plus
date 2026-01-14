@@ -50,7 +50,7 @@ export default class ReaderPanel {
     return button;
   }
 
-  private togglePanel() {
+  public togglePanel() {
     if (this.panel) {
       this.panel.remove();
       this.panel = null;
@@ -71,8 +71,146 @@ export default class ReaderPanel {
 
     container.appendChild(panel);
     this.bindPanelEvents();
+    this.bindContextMenu();
     this.loadQuickActions();
   }
+
+  private bindContextMenu() {
+    if (!this.panel) return;
+
+    // Prevent default context menu on panel
+    this.panel.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+      this.showContextMenu(e.clientX, e.clientY);
+    });
+
+    // Hide menu on click elsewhere
+    document.addEventListener("click", () => this.hideContextMenu());
+    this.panel.addEventListener("click", () => this.hideContextMenu());
+  }
+
+  private showContextMenu(x: number, y: number) {
+    this.hideContextMenu(); // Remove existing
+
+    const menu = document.createElement("div");
+    menu.className = "gpt-context-menu";
+    menu.innerHTML = `
+      <div class="menu-item" data-action="clear">🗑️ Clear Session</div>
+      <div class="menu-item" data-action="copy-all">📋 Copy All</div>
+      <div class="menu-separator"></div>
+      <div class="menu-item" data-action="layout">↔️ Toggle Layout</div>
+      <div class="menu-item" data-action="font-inc">TEXT+ Increase Font</div>
+      <div class="menu-item" data-action="font-dec">TEXT- Decrease Font</div>
+    `;
+
+    // Adjust position to stay in viewport
+    const rect = this.panel?.getBoundingClientRect();
+    if (rect) {
+      // Relative to panel
+      menu.style.left = `${x}px`;
+      menu.style.top = `${y}px`;
+    }
+
+    menu.style.cssText = `
+      position: fixed;
+      left: ${x}px;
+      top: ${y}px;
+      background: white;
+      border: 1px solid #ccc;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+      border-radius: 4px;
+      z-index: 10000;
+      min-width: 150px;
+      padding: 4px 0;
+      font-size: 13px;
+    `;
+
+    // Add styles for menu items
+    const style = document.createElement("style");
+    style.textContent = `
+      .gpt-context-menu .menu-item {
+        padding: 6px 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .gpt-context-menu .menu-item:hover {
+        background: #f0f0f0;
+      }
+      .gpt-context-menu .menu-separator {
+        height: 1px;
+        background: #eee;
+        margin: 4px 0;
+      }
+    `;
+    menu.appendChild(style);
+
+    document.body.appendChild(menu);
+
+    // Bind actions
+    menu.querySelectorAll(".menu-item").forEach(item => {
+      item.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const action = (item as HTMLElement).dataset.action;
+        this.handleMenuAction(action || "");
+        this.hideContextMenu();
+      });
+    });
+  }
+
+  private hideContextMenu() {
+    const existing = document.querySelector(".gpt-context-menu");
+    if (existing) existing.remove();
+  }
+
+  private handleMenuAction(action: string) {
+    switch (action) {
+      case "clear":
+        if (this.outputDiv) {
+          this.outputDiv.innerHTML = '<div class="gpt-welcome">Select text or click a quick action to start</div>';
+        }
+        break;
+      case "copy-all":
+        const text = this.outputDiv?.innerText || "";
+        navigator.clipboard.writeText(text);
+        break;
+      case "layout":
+        this.toggleLayout();
+        break;
+      case "font-inc":
+        this.adjustFontSize(1);
+        break;
+      case "font-dec":
+        this.adjustFontSize(-1);
+        break;
+    }
+  }
+
+  private toggleLayout() {
+    if (!this.panel) return;
+    const isRight = this.panel.style.right === "0px" || this.panel.style.right === "";
+    
+    if (isRight) {
+      this.panel.style.right = "auto";
+      this.panel.style.left = "0";
+      this.panel.style.borderLeft = "none";
+      this.panel.style.borderRight = "1px solid #ddd";
+    } else {
+      this.panel.style.left = "auto";
+      this.panel.style.right = "0";
+      this.panel.style.borderRight = "none";
+      this.panel.style.borderLeft = "1px solid #ddd";
+    }
+  }
+
+  private adjustFontSize(delta: number) {
+    if (!this.outputDiv) return;
+    const style = window.getComputedStyle(this.outputDiv);
+    const currentSize = parseInt(style.fontSize);
+    this.outputDiv.style.fontSize = `${Math.max(10, Math.min(24, currentSize + delta))}px`;
+  }
+
 
   private getPanelHTML(): string {
     const model = Zotero.Prefs.get(`${config.addonRef}.model`) || "gpt-3.5-turbo";

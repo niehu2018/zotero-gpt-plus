@@ -20,7 +20,7 @@
 | Max Tokens | 滑块 | ✅ 已实现 | P1 |
 | Related Number | 滑块 (语义搜索 top-k) | ✅ 已实现 | P1 |
 | Chat Number | 滑块 (历史对话数) | ✅ 已实现 | P1 |
-| Extra Params | Edit 弹窗 (JSON) | ❌ 未实现 | P2 |
+| Extra Params | Edit 弹窗 (JSON) | ✅ 已实现 | P2 |
 | System Prompt | Edit 弹窗 | ✅ 已实现 | P1 |
 
 ### 1.2 Custom Embeddings 自定义嵌入
@@ -101,9 +101,9 @@
 | 保存会话 | ❌ 未实现 | P2 |
 | 清空会话 | ✅ 已实现 | P1 |
 | 对话参考 (子菜单) | ❌ 未实现 | P2 |
-| 反转布局 | ❌ 未实现 | P2 |
+| 反转布局 | ✅ 已实现 | P2 |
 | 历史命令 | ❌ 未实现 | P2 |
-| 字体大小 (子菜单) | ❌ 未实现 | P2 |
+| 字体大小 (子菜单) | ✅ 已实现 | P2 |
 
 ### 2.4 底部输入栏
 
@@ -174,6 +174,7 @@ src/modules/readerPanel.ts  # 侧边栏面板
 - [x] 实现快捷操作按钮 (Summarize/Translate/Explain/Key Points)
 - [x] 实现清空会话
 - [x] 实现模型快速切换
+- [x] 实现右键菜单 (Context Menu)
 
 ### Phase 4: 高级功能 (P2-P3) ✅ 已完成
 
@@ -193,7 +194,6 @@ src/modules/annotationHandler.ts  # 自动插入 annotation
 
 **未实现 (低优先级)：**
 - [ ] 截图翻译功能
-- [ ] 右键菜单完整功能
 - [ ] Copy/Save reasoning 功能
 
 ---
