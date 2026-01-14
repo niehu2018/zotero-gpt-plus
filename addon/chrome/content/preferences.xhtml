@@ -4,63 +4,72 @@
       onload="Zotero.ZoteroGPT.prefs.init()">
 
   <html:style>
-    #zoterogptplus-prefs { padding: 8px 6px 20px; }
-    .page-title { font-size: 18px; font-weight: 600; margin: 6px 0 10px; }
-    .section { margin: 10px 0 14px; }
-    .section-title { font-size: 14px; font-weight: 600; margin: 6px 0 10px; }
-    .section-subtitle { font-size: 13px; font-weight: 600; margin: 6px 0 6px; }
-    .pref-row { display: flex; align-items: center; margin: 6px 0; }
-    .pref-label { width: 120px; font-weight: 500; opacity: 0.9; }
-    .pref-input { flex: 1; }
-    .pref-slider { flex: 1; margin: 0 8px; }
-    .pref-value { width: 60px; text-align: right; }
-    .pref-password { flex: 1; }
-    .pref-btn { margin-left: 8px; }
+    #zoterogptplus-prefs { padding: 12px 10px 30px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    .page-title { font-size: 18px; font-weight: 600; margin: 0 0 16px; }
+    .section { margin: 0 0 20px; }
+    .section-title { font-size: 14px; font-weight: 600; margin: 0 0 12px; }
+    .section-subtitle { font-size: 13px; font-weight: 600; margin: 8px 0 6px; }
+    .pref-row { display: flex; align-items: center; margin: 8px 0; min-height: 28px; }
+    .pref-label { width: 110px; font-weight: 400; font-size: 13px; }
+    .pref-input { flex: 1; height: 24px; }
+    .pref-slider { flex: 1; margin: 0 12px; }
+    .pref-value { width: 50px; text-align: left; font-size: 13px; }
+    .pref-password-container { flex: 1; display: flex; align-items: center; position: relative; }
+    .pref-password { flex: 1; height: 24px; padding-right: 24px; }
+    .eye-icon { position: absolute; right: 6px; cursor: pointer; opacity: 0.6; font-size: 14px; }
+    .pref-btn { margin-left: 8px; height: 24px; padding: 0 10px; font-size: 12px; }
     .pill-label {
-      padding: 2px 10px;
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(0, 0, 0, 0.35);
-      margin-right: 8px;
-    }
-    .icon-btn { min-width: 26px; padding: 0 6px; margin-left: 6px; }
-    .indent { margin-left: 22px; }
-    .test-bar {
-      margin: 6px 0;
-      background: rgba(0, 0, 0, 0.28);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      padding: 6px 10px;
+      padding: 2px 8px;
       border-radius: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      margin-right: 10px;
+      width: auto !important;
+      min-width: 70px;
+      text-align: center;
     }
-    .test-actions { margin: 6px 0 10px; }
-    .config-row { margin: 10px 0 14px; }
-    .config-label { margin-right: 8px; opacity: 0.9; }
-    .prompts-table { width: 100%; border-collapse: collapse; margin: 8px 0; }
+    .icon-btn { min-width: 32px; height: 24px; margin-left: 6px; padding: 0; }
+    .indent { margin-left: 20px; }
+    .test-bar {
+      margin: 12px 0;
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 8px 12px;
+      border-radius: 4px;
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+    }
+    .test-actions { margin: 8px 0 16px; }
+    .config-row { margin: 12px 0 20px; border-top: 1px solid #eee; padding-top: 16px; }
+    .config-label { margin-right: 10px; font-size: 13px; }
+    .prompts-table { width: 100%; border-collapse: collapse; margin: 10px 0; border: 1px solid #ddd; }
     .prompts-table th, .prompts-table td {
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 6px 8px;
+      border: 1px solid #ddd;
+      padding: 6px 10px;
       text-align: left;
+      font-size: 12px;
     }
-    .prompts-table th {
-      background: rgba(0, 0, 0, 0.28);
-      font-weight: 600;
-    }
-    .prompts-table tr.selected { background: rgba(255, 255, 255, 0.08); }
-    .prompt-actions { display: flex; justify-content: flex-end; gap: 6px; margin-top: 6px; }
-    .prompts-help { margin: 4px 0 8px; opacity: 0.8; }
-    .link { color: #6fb1ff; text-decoration: none; }
-    .ai-outline-title { color: #ff5a4e; margin-top: 2px; }
-    .tiny-help { opacity: 0.75; margin: 6px 0 4px; }
+    .prompts-table th { background: #f5f5f5; font-weight: 600; }
+    .prompts-table tr.selected { background: #eef6ff; }
+    .prompt-actions { display: flex; justify-content: flex-end; gap: 6px; margin-top: 8px; }
+    .prompts-help { margin: 4px 0 10px; font-size: 12px; opacity: 0.8; }
+    .link { color: #0066cc; text-decoration: none; }
+    .link:hover { text-decoration: underline; }
+    .ai-outline-title { color: #d93025; margin-top: 4px; }
   </html:style>
 
   <label class="page-title" value="GPT Plus"/>
 
+  <!-- General Settings -->
   <vbox class="section">
     <label class="section-title" value="General"/>
 
+    <!-- Base API Row -->
     <hbox class="pref-row" align="center">
       <label class="pref-label pill-label" value="Base API"/>
-      <menulist id="pref-api-provider" style="max-width: 140px; margin-right: 8px;">
+      <textbox id="pref-api" class="pref-input" placeholder="https://api.openai.com"/>
+      <menulist id="pref-api-provider" class="icon-btn">
         <menupopup>
           <menuitem label="OpenRouter" value="https://openrouter.ai/api"/>
           <menuitem label="Deepseek" value="https://api.deepseek.com"/>
@@ -79,21 +88,24 @@
           <menuitem label="Custom" value="custom"/>
         </menupopup>
       </menulist>
-      <textbox id="pref-api" class="pref-input" placeholder="https://api.openai.com"/>
-      <button class="icon-btn" label="▾"/>
     </hbox>
 
+    <!-- API Key Row -->
     <hbox class="pref-row" align="center">
       <label class="pref-label" value="API Key"/>
-      <textbox id="pref-secretKey" class="pref-password" type="password" placeholder="sk-..."/>
+      <hbox class="pref-password-container">
+        <textbox id="pref-secretKey" class="pref-password" type="password" placeholder="sk-..."/>
+        <html:span class="eye-icon" onclick="Zotero.ZoteroGPT.prefs.togglePassword('secretKey')">👁️</html:span>
+      </hbox>
       <button id="pref-secretKey-toggle" class="pref-btn" label="Click to display"
               oncommand="Zotero.ZoteroGPT.prefs.togglePassword('secretKey')"/>
     </hbox>
 
+    <!-- Model Row -->
     <hbox class="pref-row" align="center">
       <label class="pref-label" value="Model"/>
       <textbox id="pref-model" class="pref-input" placeholder="gpt-3.5-turbo"/>
-      <menulist id="pref-model-preset" style="max-width: 40px; margin-left: 8px;">
+      <menulist id="pref-model-preset" class="icon-btn">
         <menupopup>
           <menuitem label="GPT-3.5" value="gpt-3.5-turbo"/>
           <menuitem label="GPT-4" value="gpt-4"/>
@@ -130,27 +142,36 @@
 
     <hbox class="pref-row" align="center">
       <label class="pref-label" value="Extra Params"/>
-      <button label="Edit" oncommand="Zotero.ZoteroGPT.prefs.openTextEditor('extraParams', 'Extra Params (JSON)')"/>
+      <button class="pref-btn" style="margin-left: 0;" label="Edit" oncommand="Zotero.ZoteroGPT.prefs.openTextEditor('extraParams', 'Extra Params (JSON)')"/>
     </hbox>
 
     <hbox class="pref-row" align="center">
       <label class="pref-label" value="System Prompt"/>
-      <button label="Edit" oncommand="Zotero.ZoteroGPT.prefs.openTextEditor('systemPrompt', 'System Prompt')"/>
+      <button class="pref-btn" style="margin-left: 0;" label="Edit" oncommand="Zotero.ZoteroGPT.prefs.openTextEditor('systemPrompt', 'System Prompt')"/>
     </hbox>
 
-    <hbox class="pref-row" align="center">
+    <!-- Custom Embeddings -->
+    <hbox class="pref-row" align="center" style="margin-top: 12px;">
       <checkbox id="pref-useCustomEmbeddings" label="Using custom embeddings"/>
     </hbox>
 
     <hbox class="pref-row indent" align="center">
       <label class="pref-label" value="Full API"/>
       <textbox id="pref-embeddingApi" class="pref-input" placeholder="http://127.0.0.1:1234/v1/embeddings"/>
-      <button class="icon-btn" label="▾"/>
+      <menulist class="icon-btn">
+        <menupopup>
+          <menuitem label="Local" value="http://127.0.0.1:1234/v1/embeddings"/>
+          <menuitem label="OpenAI" value="https://api.openai.com/v1/embeddings"/>
+        </menupopup>
+      </menulist>
     </hbox>
 
     <hbox class="pref-row indent" align="center">
       <label class="pref-label" value="Key"/>
-      <textbox id="pref-embeddingKey" class="pref-password" type="password" placeholder="sk-..."/>
+      <hbox class="pref-password-container">
+        <textbox id="pref-embeddingKey" class="pref-password" type="password" placeholder="sk-..."/>
+        <html:span class="eye-icon" onclick="Zotero.ZoteroGPT.prefs.togglePassword('embeddingKey')">👁️</html:span>
+      </hbox>
       <button id="pref-embeddingKey-toggle" class="pref-btn" label="Click to display"
               oncommand="Zotero.ZoteroGPT.prefs.togglePassword('embeddingKey')"/>
     </hbox>
@@ -158,7 +179,13 @@
     <hbox class="pref-row indent" align="center">
       <label class="pref-label" value="Model"/>
       <textbox id="pref-embeddingModel" class="pref-input" placeholder="text-embedding-ada-002"/>
-      <button class="icon-btn" label="▾"/>
+      <menulist class="icon-btn">
+        <menupopup>
+          <menuitem label="ada-002" value="text-embedding-ada-002"/>
+          <menuitem label="3-small" value="text-embedding-3-small"/>
+          <menuitem label="3-large" value="text-embedding-3-large"/>
+        </menupopup>
+      </menulist>
     </hbox>
 
     <hbox class="pref-row indent" align="center">
@@ -168,28 +195,31 @@
     </hbox>
   </vbox>
 
+  <!-- Test Bar -->
   <html:div class="test-bar">
-    <label id="pref-test-result" value="Click test to start"/>
+    <label id="pref-test-result" value="Click test to start" style="font-size: 13px; color: #666;"/>
   </html:div>
 
   <hbox class="test-actions" align="center">
-    <button id="pref-test-btn" label="Test" oncommand="Zotero.ZoteroGPT.prefs.testConnection()"/>
+    <button id="pref-test-btn" class="pref-btn" style="margin-left: 0;" label="Test" oncommand="Zotero.ZoteroGPT.prefs.testConnection()"/>
     <spacer flex="1"/>
-    <button label="Help" oncommand="Zotero.launchURL('https://github.com/niehu2018/zotero-gpt-plus')"/>
+    <button class="pref-btn" label="Help" oncommand="Zotero.launchURL('https://github.com/niehu2018/zotero-gpt-plus')"/>
   </hbox>
 
+  <!-- Config Management -->
   <hbox class="config-row" align="center">
-    <button label="Save Config" oncommand="Zotero.ZoteroGPT.prefs.saveConfig()"/>
+    <button class="pref-btn" style="margin-left: 0;" label="Save Config" oncommand="Zotero.ZoteroGPT.prefs.saveConfig()"/>
     <spacer flex="1"/>
     <label class="config-label" value="Switch to Config"/>
-    <menulist id="pref-config-select" style="max-width: 180px;">
+    <menulist id="pref-config-select" style="min-width: 140px;">
       <menupopup>
         <!-- Populated by JS -->
       </menupopup>
     </menulist>
-    <button label="Delete Config" oncommand="Zotero.ZoteroGPT.prefs.deleteConfig()"/>
+    <button class="pref-btn" label="Delete Config" oncommand="Zotero.ZoteroGPT.prefs.deleteConfig()"/>
   </hbox>
 
+  <!-- Pro Functions -->
   <vbox class="section">
     <label class="section-title" value="Pro Functions ⭐"/>
     <label class="section-subtitle ai-outline-title" value="AI Outline 优化中文解析"/>
@@ -202,12 +232,13 @@
 
     <hbox class="pref-row indent" align="center">
       <label class="pref-label" value="Annotation Color"/>
-      <html:input id="pref-annotationColor" type="color" value="#b99bcf"/>
+      <html:input id="pref-annotationColor" type="color" value="#b99bcf" style="width: 60px; height: 24px; border: 1px solid #ddd;"/>
     </hbox>
 
     <checkbox id="pref-altSelection" label="Enable continuous selection when press the Alt key"/>
   </vbox>
 
+  <!-- Prompts -->
   <vbox class="section">
     <label class="section-title" value="Prompts"/>
     <label class="prompts-help">有关不同Type的prompt的作用域详见 <html:a class="link" href="https://github.com/niehu2018/zotero-gpt-plus/wiki" onclick="Zotero.launchURL(this.href); return false;">中文文档</html:a>。</label>
@@ -216,8 +247,8 @@
       <html:table class="prompts-table">
         <html:thead>
           <html:tr>
-            <html:th style="width: 160px;">名称</html:th>
-            <html:th style="width: 160px;">类型</html:th>
+            <html:th style="width: 120px;">名称</html:th>
+            <html:th style="width: 120px;">类型</html:th>
             <html:th>提示词</html:th>
           </html:tr>
         </html:thead>
@@ -228,19 +259,21 @@
     </html:div>
 
     <hbox class="prompt-actions" align="center">
-      <button label="↑" oncommand="Zotero.ZoteroGPT.prefs.movePrompt(-1)" tooltiptext="Move Up"/>
-      <button label="↓" oncommand="Zotero.ZoteroGPT.prefs.movePrompt(1)" tooltiptext="Move Down"/>
-      <button label="Edit" oncommand="Zotero.ZoteroGPT.prefs.editPrompt()"/>
-      <button label="Add" oncommand="Zotero.ZoteroGPT.prefs.addPrompt()"/>
+      <button class="pref-btn" label="↑" oncommand="Zotero.ZoteroGPT.prefs.movePrompt(-1)" tooltiptext="Move Up"/>
+      <button class="pref-btn" label="↓" oncommand="Zotero.ZoteroGPT.prefs.movePrompt(1)" tooltiptext="Move Down"/>
+      <button class="pref-btn" label="Edit" oncommand="Zotero.ZoteroGPT.prefs.editPrompt()"/>
+      <button class="pref-btn" label="Add" oncommand="Zotero.ZoteroGPT.prefs.addPrompt()"/>
     </hbox>
   </vbox>
 
+  <!-- Other -->
   <vbox class="section">
     <label class="section-title" value="Other"/>
     <checkbox id="pref-preserveReasoningClipboard" label="Copy to clipboard to preserve reasoning content"/>
     <checkbox id="pref-preserveReasoningNote" label="Save as note to preserve reasoning content"/>
   </vbox>
 
+  <!-- Links -->
   <vbox class="section">
     <label class="section-title" value="Links"/>
     <label class="tiny-help"><html:a class="link" href="https://github.com/niehu2018/zotero-gpt-plus/wiki" onclick="Zotero.launchURL(this.href); return false;">视频教程</html:a></label>
